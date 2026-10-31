@@ -34,6 +34,8 @@ function rm_register_menu_item_cpt() {
 		'show_in_menu'       => true,
 		'show_in_admin_bar'  => true,
 		'show_in_rest'       => true,
+		//'supports'      	 => array( 'title', 'editor', 'thumbnail', 'page-attributes' ), 
+
 
 		/**
 		 * We will create our own frontend template later.
@@ -101,12 +103,8 @@ function rm_register_menu_category_taxonomy() {
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'show_in_rest'      => true,
-
-		/**
-		 * Hierarchical = true makes it behave like WordPress Categories.
-		 */
+		'show_in_quick_edit'=> true,
 		'hierarchical'      => true,
-
 		'rewrite'           => array(
 			'slug'       => 'menu-category',
 			'with_front' => false,
@@ -121,3 +119,15 @@ function rm_register_menu_category_taxonomy() {
 }
 
 add_action( 'init', 'rm_register_menu_category_taxonomy' );
+
+
+// -------------------------------------------
+add_filter( 'quick_edit_show_taxonomy', 'toggle_quick_edit_taxonomy', 10, 3 );
+
+function toggle_quick_edit_taxonomy( $show_in_quick_edit, $taxonomy_name, $post_type ) {
+	// die;
+    if ( 'rm_menu_category' === $taxonomy_name && 'rm_menu_item' === $post_type ) {
+        return false;
+    }
+    return $show_in_quick_edit;
+}

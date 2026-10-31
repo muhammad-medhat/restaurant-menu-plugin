@@ -1,0 +1,8 @@
+*1.*
+1*.*
+.code-search
+
+*.old
+# wp post delete $(wp post list --post_type='rm_menu_item' --format=ids) --force
+# wp post delete (wp post list --post_type='rm_menu_item' --format=ids) --force
+assets/img/*

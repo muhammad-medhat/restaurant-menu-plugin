@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // constants
 define( 'RM_PATH', plugin_dir_path(__FILE__) );
+define( 'RM_URL', plugin_dir_url( __FILE__) );
 define( 'RM_MENU_ITEM_CPT', 'rm_menu_item' );
 define( 'RM_MENU_CATEGORY_TAX', 'rm_menu_category' );
 define( 'RM_MENU_SLUG', 'edit.php?post_type=' . RM_MENU_ITEM_CPT);
@@ -26,6 +27,14 @@ define( 'RM_MENU_SLUG', 'edit.php?post_type=' . RM_MENU_ITEM_CPT);
 
 require_once RM_PATH .'/includes/cpt.php';
 require_once RM_PATH .'/includes/activation.php';
+// require_once RM_PATH .'/includes/category-icons.php';
+// require_once RM_PATH .'/includes/category-icons-fa.php';
+require_once RM_PATH .'/includes/category-img.php';
+require_once RM_PATH .'/includes/category-acf.php';
+require_once RM_PATH . 'includes/bulk-price-updater.php';
+require_once RM_PATH . 'includes/category-order.php';
+require_once RM_PATH . 'includes/category-quick-edit.php';
+require_once RM_PATH . 'includes/bulk-edit-names.php';
 
 
 /**
@@ -66,10 +75,3 @@ function rm_enqueue_frontend_assets() {
 }
 
 add_action( 'wp_enqueue_scripts', 'rm_enqueue_frontend_assets' );
-
-
-//includes 
-// require_once RM_PATH . 'includes/frontend.php';
-
-// require_once RM_PATH . 'includes/importer.php';
-require_once RM_PATH . 'includes/bulk-price-updater.php';

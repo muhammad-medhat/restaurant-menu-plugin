@@ -1,0 +1,23 @@
+.rm-category-icon-image {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.rm-icon-option {
+  min-height: 100px;
+}
+
+.rm-icon-option.is-selected {
+  border: 2px solid #2271b1;
+  background: #eaf4ff;
+}
+.rm-category-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-inline-end: 0.4em;
+}
