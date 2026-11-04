@@ -4,3 +4,18 @@
 #col-right {
   width: 100%;
 }
+.category-icon {
+  display: inline-block;
+  min-width: 3rem;
+  min-height: 2.5rem;
+  background-color: #000;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.column-fa_icon i {
+  font-size: 1.5rem;
+}

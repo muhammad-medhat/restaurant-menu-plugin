@@ -67,15 +67,11 @@ add_filter( 'manage_' . RM_MENU_CATEGORY_TAX . '_custom_column', function ( $con
         // ACF taxonomy term fields use the term_{$term_id} format.
         $value = get_field( $column_name, 'term_' . $term_id );
 
-        if ( $value === null || $value === false || $value === '' ) {
-            return '<span style="color:#999;">—</span>';
-        }
-
         // Font Awesome icon.
         if ( 'fa_icon' === $column_name ) {
             $dname=get_field( 'name_ar', 'term_' . $term_id );
             $dicon=get_field( 'fa_icon', 'term_' . $term_id );
-            if(isset($value)){
+            if( !empty($value)){
                 $classes = preg_split( '/\s+/', trim( (string) $value ) );
                 $classes = array_filter( $classes, 'sanitize_html_class' );
                 
@@ -85,45 +81,44 @@ add_filter( 'manage_' . RM_MENU_CATEGORY_TAX . '_custom_column', function ( $con
             }else{
                 $cat=get_term( $term_id );
                 $icon_svg = c21_get_category_icon($cat);
-                //return ?>
-<span class="category-icon" style="-webkit-mask-image: url('<?php echo $icon_svg?>');
-                                mask-image: url('<?php echo $icon_svg?>');"></span>
-<?php //;
+                $html="<span class='category-icon' style='-webkit-mask-image: url(\"$icon_svg\");
+                mask-image: url(\"$icon_svg\");'></span>";
+                return $html;
 
             }
         }
 
-        // ACF true/false field.
-        if ( 'is_compact' === $column_name ) {
-            return $value ? 'Yes' : 'No';
-        }
+// ACF true/false field.
+if ( 'is_compact' === $column_name ) {
+return $value ? 'Yes' : 'No';
+}
 
-        // Descriptions.
-        if ( strpos( $column_name, 'desc_' ) === 0 ) {
-            return esc_html(
-                wp_trim_words( wp_strip_all_tags( $value ), 10 )
-            );
-        }
+// Descriptions.
+if ( strpos( $column_name, 'desc_' ) === 0 ) {
+return esc_html(
+wp_trim_words( wp_strip_all_tags( $value ), 10 )
+);
+}
 
-        // Regular text values.
-        if ( is_scalar( $value ) ) {
-            return esc_html( (string) $value );
-        }
+// Regular text values.
+if ( is_scalar( $value ) ) {
+return esc_html( (string) $value );
+}
 
-        return '<span style="color:#999;">—</span>';
-    },
-    10,
-    3
+return '<span style="color:#999;">—</span>';
+},
+10,
+3
 );
 add_action( 'admin_enqueue_scripts', function(){
-    //add style for edit-tags.php?taxonomy=rm_menu_category&post_type=rm_menu_item
-    $screen = get_current_screen();
-    if ( $screen && $screen->id === 'edit-rm_menu_category' ) {
-        wp_enqueue_style(
-            'rm-admin-cats',
-            RM_URL.'/assets/css/admin.css',
-            array(),
-            '6.4.2'
-        );
-    }
+//add style for edit-tags.php?taxonomy=rm_menu_category&post_type=rm_menu_item
+$screen = get_current_screen();
+if ( $screen && $screen->id === 'edit-rm_menu_category' ) {
+wp_enqueue_style(
+'rm-admin-cats',
+RM_URL.'/assets/css/admin.css',
+array(),
+'6.4.2'
+);
+}
 } );
