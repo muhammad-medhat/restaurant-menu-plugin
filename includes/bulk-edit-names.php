@@ -12,7 +12,7 @@ add_filter(
 );
 
 function rm_add_bulk_edit_names_action( $actions ) {
-    $actions['rm_bulk_edit_names'] = __( 'Bulk Edit Names', 'restaurant-menu' );
+    $actions['rm_bulk_edit_names'] = __( 'Bulk Edit ACF...', 'restaurant-menu' );
 
     return $actions;
 }
@@ -191,11 +191,16 @@ function rm_render_bulk_edit_names_page() {
         $names_ar = isset( $_POST['name_ar'] ) && is_array( $_POST['name_ar'] )
             ? wp_unslash( $_POST['name_ar'] )
             : array();
-
+            
         $names_en = isset( $_POST['name_en'] ) && is_array( $_POST['name_en'] )
             ? wp_unslash( $_POST['name_en'] )
             : array();
-
+        $descs_ar = isset( $_POST['desc_ar'] ) && is_array( $_POST['desc_ar'] )
+            ? wp_unslash( $_POST['desc_ar'] )
+            : array();
+        $descs_en = isset( $_POST['desc_en'] ) && is_array( $_POST['desc_en'] )
+            ? wp_unslash( $_POST['desc_en'] )
+            : array();
         $updated = 0;
         $skipped = 0;
 
@@ -229,6 +234,25 @@ function rm_render_bulk_edit_names_page() {
                     update_field( 'name_en', $value_en, $post_id );
                 } else {
                     update_post_meta( $post_id, 'name_en', $value_en );
+                }
+            }
+            if ( array_key_exists( $post_id, $descs_ar ) ) {
+                $value_desc_ar = sanitize_textarea_field( $descs_ar[ $post_id ] );
+            
+                if ( function_exists( 'update_field' ) ) {
+                    update_field( 'desc_ar', $value_desc_ar, $post_id );
+                } else {
+                    update_post_meta( $post_id, 'desc_ar', $value_desc_ar );
+                }
+            }
+            
+            if ( array_key_exists( $post_id, $descs_en ) ) {
+                $value_desc_en = sanitize_textarea_field( $descs_en[ $post_id ] );
+            
+                if ( function_exists( 'update_field' ) ) {
+                    update_field( 'desc_en', $value_desc_en, $post_id );
+                } else {
+                    update_post_meta( $post_id, 'desc_en', $value_desc_en );
                 }
             }
 
@@ -288,6 +312,8 @@ function rm_render_bulk_edit_names_page() {
     echo '<th>' . esc_html__( 'Menu Item', 'restaurant-menu' ) . '</th>';
     echo '<th>' . esc_html__( 'Arabic Name', 'restaurant-menu' ) . '</th>';
     echo '<th>' . esc_html__( 'English Name', 'restaurant-menu' ) . '</th>';
+    echo '<th>' . esc_html__( 'Arabic Desc', 'restaurant-menu' ) . '</th>';
+    echo '<th>' . esc_html__( 'English Desc', 'restaurant-menu' ) . '</th>';
     echo '</tr></thead><tbody>';
 
     foreach ( $post_ids as $post_id ) {
@@ -298,6 +324,13 @@ function rm_render_bulk_edit_names_page() {
         $name_en = function_exists( 'get_field' )
             ? get_field( 'name_en', $post_id )
             : get_post_meta( $post_id, 'name_en', true );
+        $desc_ar = function_exists( 'get_field' )
+            ? get_field( 'desc_ar', $post_id )
+            : get_post_meta( $post_id, 'desc_ar', true );
+
+        $desc_en = function_exists( 'get_field' )
+            ? get_field( 'desc_en', $post_id )
+            : get_post_meta( $post_id, 'desc_en', true );
 
         echo '<tr>';
 
@@ -312,6 +345,14 @@ function rm_render_bulk_edit_names_page() {
 
         echo '<td>';
         echo '<input type="text" class="large-text" dir="ltr" name="name_en[' . esc_attr( $post_id ) . ']" value="' . esc_attr( $name_en ) . '">';
+        echo '</td>';
+
+        echo '<td>';
+        echo '<textarea cols="33" rows="5" class="large-text" dir="rtl" name="desc_ar[' . esc_attr( $post_id ) . ']">' . esc_attr( $desc_ar ) . '</textarea>';
+        echo '</td>';
+        
+        echo '<td>';
+        echo '<textarea cols="33" rows="5" class="large-text" dir="ltr" name="desc_en[' . esc_attr( $post_id ) . ']">' . esc_attr( $desc_en ) . '</textarea>';
         echo '</td>';
 
         echo '</tr>';

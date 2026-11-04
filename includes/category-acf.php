@@ -73,12 +73,24 @@ add_filter( 'manage_' . RM_MENU_CATEGORY_TAX . '_custom_column', function ( $con
 
         // Font Awesome icon.
         if ( 'fa_icon' === $column_name ) {
-            $classes = preg_split( '/\s+/', trim( (string) $value ) );
-            $classes = array_filter( $classes, 'sanitize_html_class' );
-
-            return '<i class="' . esc_attr( implode( ' ', $classes ) ) .
+            $dname=get_field( 'name_ar', 'term_' . $term_id );
+            $dicon=get_field( 'fa_icon', 'term_' . $term_id );
+            if(isset($value)){
+                $classes = preg_split( '/\s+/', trim( (string) $value ) );
+                $classes = array_filter( $classes, 'sanitize_html_class' );
+                
+                return '<i class="' . esc_attr( implode( ' ', $classes ) ) .
                 '" aria-hidden="true"></i> <code>' .
                 esc_html( $value ) . '</code>';
+            }else{
+                $cat=get_term( $term_id );
+                $icon_svg = c21_get_category_icon($cat);
+                //return ?>
+<span class="category-icon" style="-webkit-mask-image: url('<?php echo $icon_svg?>');
+                                mask-image: url('<?php echo $icon_svg?>');"></span>
+<?php //;
+
+            }
         }
 
         // ACF true/false field.
@@ -103,3 +115,15 @@ add_filter( 'manage_' . RM_MENU_CATEGORY_TAX . '_custom_column', function ( $con
     10,
     3
 );
+add_action( 'admin_enqueue_scripts', function(){
+    //add style for edit-tags.php?taxonomy=rm_menu_category&post_type=rm_menu_item
+    $screen = get_current_screen();
+    if ( $screen && $screen->id === 'edit-rm_menu_category' ) {
+        wp_enqueue_style(
+            'rm-admin-cats',
+            RM_URL.'/assets/css/admin.css',
+            array(),
+            '6.4.2'
+        );
+    }
+} );

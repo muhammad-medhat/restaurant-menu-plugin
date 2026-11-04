@@ -34,7 +34,8 @@ require_once RM_PATH .'/includes/category-acf.php';
 require_once RM_PATH . 'includes/bulk-price-updater.php';
 require_once RM_PATH . 'includes/category-order.php';
 require_once RM_PATH . 'includes/category-quick-edit.php';
-require_once RM_PATH . 'includes/bulk-edit-names.php';
+require_once RM_PATH . 'includes/bulk-edit-acf.php';
+// require_once RM_PATH . 'includes/bulk-edit-names.php';
 
 
 /**
