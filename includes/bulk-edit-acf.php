@@ -217,8 +217,11 @@ function rm_render_bulk_edit_names_page() {
                 echo '<input type="checkbox" name="' . esc_attr( $name ) . '" value="1" ' . checked( $value, '1', false ) . '>';
             } elseif ( 'textarea' === $config['type'] ) {
                 echo '<textarea cols="33" rows="5" class="large-text" dir="' . esc_attr( $config['dir'] ) . '" name="' . esc_attr( $name ) . '">' . esc_textarea( $value ) . '</textarea>';
+            } elseif ('text' === $config['type']) {
+                echo '<input type="text" class="large-text" dir="' . esc_attr( $config['dir'] ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '">';
             } else {
                 echo '<input type="text" class="large-text" dir="' . esc_attr( $config['dir'] ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '">';
+                echo '<br><a href="' . esc_url( get_edit_post_link( $post_id ) ) . '" target="_blank">' . esc_html__( 'Edit more...', 'restaurant-menu' ) . '</a>';
             }
             echo '</td>';
         }
