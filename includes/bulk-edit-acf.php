@@ -113,9 +113,10 @@ function rm_bulk_acf_save( $selected_ids ) {
             if ( 'checkbox' === $config['type'] ) {
                 $value = '1' === $raw ? 1 : 0;
             } elseif ( 'textarea' === $config['type'] ) {
-                $value = sanitize_textarea_field( $raw );
+                $value = $raw;
             } else {
-                $value = sanitize_text_field( $raw );
+                // $value = sanitize_text_field( $raw );
+                $value = $raw ;
             }
 
             if ( 'slug' === $config['type'] ) {
