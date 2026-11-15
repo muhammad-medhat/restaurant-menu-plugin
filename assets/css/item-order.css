@@ -1,0 +1,32 @@
+#rm-item-order-list {
+    max-width: 700px;
+    margin: 0 0 20px;
+    list-style: none;
+}
+
+#rm-item-order-list > li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.rm-item-order-handle {
+    cursor: grab;
+    color: #646970;
+}
+
+.rm-item-order-name {
+    flex: 1;
+    font-weight: 600;
+}
+
+#rm-item-order-list > .rm-item-order-placeholder {
+    background: #f0f6fc;
+    border: 2px dashed #2271b1;
+}
