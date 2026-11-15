@@ -145,6 +145,38 @@ function rm_bulk_acf_save( $selected_ids ) {
     exit;
 }
 
+/**
+ * Use the category name when the selected items are all in one category.
+ */
+function rm_bulk_acf_category_name( $post_ids ) {
+    $category = null;
+
+    foreach ( $post_ids as $post_id ) {
+        $terms = get_the_terms( $post_id, RM_MENU_CATEGORY_TAX );
+        if ( ! is_array( $terms ) || 1 !== count( $terms ) ) {
+            return '';
+        }
+
+        $term = reset( $terms );
+        if ( $category && $category->term_id !== $term->term_id ) {
+            return '';
+        }
+
+        $category = $term;
+    }
+
+    if ( ! $category ) {
+        return '';
+    }
+
+    $name_ar = function_exists( 'get_field' )
+        ? get_field( 'name_ar', 'term_' . $category->term_id )
+        : get_term_meta( $category->term_id, 'name_ar', true );
+    $name_ar = is_string( $name_ar ) ? trim( $name_ar ) : '';
+
+    return '' !== $name_ar ? $name_ar : $category->name;
+}
+
 function rm_render_bulk_edit_names_page() {
     if ( ! current_user_can( 'edit_posts' ) ) {
         wp_die( esc_html__( 'You do not have permission to edit menu items.', 'restaurant-menu' ) );
@@ -166,7 +198,15 @@ function rm_render_bulk_edit_names_page() {
     }
 
     $fields = rm_bulk_acf_fields();
-    echo '<div class="wrap"><h1>' . esc_html__( 'Bulk Edit Menu Fields', 'restaurant-menu' ) . '</h1>';
+    $category_name = rm_bulk_acf_category_name( $post_ids );
+    $title = __( 'Bulk Edit Menu Fields', 'restaurant-menu' );
+
+    if ( '' !== $category_name ) {
+        /* translators: %s: Menu category name. */
+        $title = sprintf( __( 'Bulk Edit Menu Fields — %s', 'restaurant-menu' ), $category_name );
+    }
+
+    echo '<div class="wrap"><h1>' . esc_html( $title ) . '</h1>';
 
     if ( isset( $_GET['rm_updated'] ) ) {
         printf(
